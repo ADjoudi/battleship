@@ -1,6 +1,12 @@
-export default function Ship(len) {
+export default function Ship(shipName, len) {
+  let shipN = shipName;
   let length = len;
-  let body = ["", "", "", ""];
+  let body = [];
+  (function () {
+    for (let i = 0; i < length; i++) {
+      body.push("");
+    }
+  })();
   const hit = (position) => {
     body[position] = "hit";
     return true;
@@ -13,8 +19,15 @@ export default function Ship(len) {
     });
     return true;
   };
+  const getBody = () => {
+    return body;
+  };
+  const getShipName = () => {
+    return shipN;
+  };
   return {
-    body,
+    getShipName,
+    getBody,
     hit,
     isSunk,
   };
