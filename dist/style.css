@@ -1,2 +1,128 @@
+@import url("https://fonts.googleapis.com/css2?family=Carter+One&family=Chela+One&family=Roboto&display=swap");
 :root {
+  --color-text: #414141;
+  --bg-grey: #f8f8f8;
+  --board-grey: #d9d9d9;
+  --block-default: #9abac5;
+}
+* {
+  margin: 0;
+  padding: 0;
+}
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-text);
+}
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background-color: var(--bg-grey);
+}
+header h1 {
+  font-family: "Carter One", cursive;
+  font-size: 4rem;
+  font-weight: 400;
+}
+
+main {
+  flex: 1;
+  display: flex;
+}
+.player {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.player h2 {
+  font-family: "Chela One", cursive;
+  font-weight: 400;
+  font-size: 2rem;
+}
+
+.player .board {
+  background-color: var(--board-grey);
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.4rem;
+  padding: 0.4rem;
+}
+.player .board .block {
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--block-default);
+}
+
+.player h3 {
+  width: 1rem;
+  font-family: "Chela One", cursive;
+  font-weight: 400;
+  font-size: 1rem;
+  letter-spacing: 0.2em;
+  transform: rotate(-90deg) translateX(-4.5rem);
+  align-self: start;
+}
+
+.shipyard {
+  width: 26.8rem;
+  height: 6.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 1rem;
+}
+.shipyard .ships {
+  width: 22rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.ship {
+  background-color: var(--board-grey);
+  height: 2.5rem;
+}
+.ships .n1 {
+  width: 5rem;
+}
+.ships .n2 {
+  width: 12.5rem;
+}
+.ships .n3 {
+  width: 10rem;
+}
+.ships .n4 {
+  width: 2.5rem;
+}
+.ships .n5 {
+  width: 7.5rem;
+}
+
+.graveyard {
+  width: 26.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 1rem;
+}
+.graveyard h3 {
+  transform: rotate(-90deg) translateX(-5.3rem);
+}
+.graveyard .stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 0.6rem;
+}
+.graveyard h2 {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  opacity: 60%;
 }
