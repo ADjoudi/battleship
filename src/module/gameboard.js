@@ -26,8 +26,10 @@ export default function Gameboard() {
   const receiveAttack = (cordX, cordY) => {
     if (gameboard[cordY][cordX] == "") {
       gameboard[cordY][cordX] == "miss";
-      return;
+      console.log("missed");
+      return gameboard;
     }
+    gameboard[cordY][cordX] = "hit";
     let shipName = gameboard[cordY][cordX];
     return { cordX, cordY, shipName };
   };
@@ -45,11 +47,21 @@ export default function Gameboard() {
   const getGameBoard = () => {
     return gameboard;
   };
+  const findShipFirstCord = (shipName) => {
+    for (let i = 0; i < gameboard.length; i++) {
+      for (let j = 0; j < gameboard.length; j++) {
+        if (gameboard[i][j] == shipName) {
+          return j;
+        }
+      }
+    }
+  };
   return {
     checkAvailability,
     placeShip,
     receiveAttack,
     allShipsSunk,
     getGameBoard,
+    findShipFirstCord,
   };
 }

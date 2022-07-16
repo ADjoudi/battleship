@@ -18,6 +18,7 @@ function rgbToHex(col) {
 
 const NewGame = () => {
   const gameboard = Gameboard();
+  const opponentGameboard = Gameboard();
   const player1 = Player();
   const player2 = Player();
   const shipyardData = [
@@ -33,10 +34,38 @@ const NewGame = () => {
 
   let nbrShips = 5;
 
-  const gameStart = () => {};
+  const opBoard = document.querySelector("#opponentboard");
+  const opBoardBlocks = document.querySelectorAll("#opponentboard .block");
+
+  const gameStart = () => {
+    opBoardBlocks.forEach((block) => {
+      block.style.backgroundColor = "#9abac5";
+
+      block.addEventListener("click", () => {
+        let cordX = (block.getAttribute("id") - 1) % 6;
+        let cordY = Math.floor((block.getAttribute("id") - 1) / 6);
+        console.log(opponentGameboard.getGameBoard());
+        const shipHit = opponentGameboard.receiveAttack(cordX, cordY);
+        if (!shipHit) {
+          console.log("und");
+          return;
+        }
+        shipyardData.forEach((ship) => {
+          if (ship.getShipName == shipHit.shipName) {
+            let shipCord = opponentGameboard.findShipFirstCord(
+              shipHit.shipName
+            );
+            shipCord = 6 - shipCord;
+            shipCord = shipCord - shipHit.cordX;
+            ship.hit(shipCord);
+            console.log(ship);
+          }
+        });
+      });
+    });
+  };
 
   const opponentShipPlacement = () => {
-    const opponentGameboard = Gameboard();
     shipyardData.forEach((ship) => {
       let cordX;
       let cordY;
