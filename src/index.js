@@ -31,7 +31,23 @@ const NewGame = () => {
   const ships = document.querySelectorAll(".shipyard .ship");
   const blocks = document.querySelectorAll(".board .block");
 
-  const dragAndDrop = () => {
+  let nbrShips = 5;
+
+  const gameStart = () => {};
+
+  const opponentShipPlacement = () => {
+    const opponentGameboard = Gameboard();
+    shipyardData.forEach((ship) => {
+      let cordX;
+      let cordY;
+      do {
+        cordX = Math.round(Math.random() * 5);
+        cordY = Math.round(Math.random() * 5);
+      } while (!opponentGameboard.placeShip(cordX, cordY, ship));
+    });
+    console.log(opponentGameboard.getGameBoard());
+  };
+  const shipPlacement = () => {
     let shipSelected = false;
     let theShip;
     ships.forEach((ship) => {
@@ -60,6 +76,11 @@ const NewGame = () => {
           sibling.style.backgroundColor = "#058514";
           sibling = sibling.nextElementSibling;
         }
+        //Start the game after placing all ships
+        nbrShips--;
+        if (nbrShips === 0) {
+          gameStart();
+        }
         console.log(gameboard.getGameBoard());
         shipSelected = false;
       });
@@ -87,7 +108,9 @@ const NewGame = () => {
       });
     });
   };
-  dragAndDrop();
+
+  opponentShipPlacement();
+  shipPlacement();
 };
 
 NewGame();
