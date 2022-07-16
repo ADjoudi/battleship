@@ -2,6 +2,20 @@ import Gameboard from "./module/gameboard";
 import Player from "./module/player";
 import Ship from "./module/ship";
 
+function rgbToHex(col) {
+  if (col.charAt(0) == "r") {
+    col = col.replace("rgb(", "").replace(")", "").split(",");
+    var r = parseInt(col[0], 10).toString(16);
+    var g = parseInt(col[1], 10).toString(16);
+    var b = parseInt(col[2], 10).toString(16);
+    r = r.length == 1 ? "0" + r : r;
+    g = g.length == 1 ? "0" + g : g;
+    b = b.length == 1 ? "0" + b : b;
+    var colHex = "#" + r + g + b;
+    return colHex;
+  }
+}
+
 const NewGame = () => {
   const gameboard = Gameboard();
   const player1 = Player();
@@ -28,7 +42,6 @@ const NewGame = () => {
             theShip = s;
           }
         });
-        console.log("works   " + ship.getAttribute("id"));
         ship.style.visibility = "hidden";
         ship.style.position = "absolute";
       });
@@ -39,18 +52,25 @@ const NewGame = () => {
         if (!shipSelected) return;
         let cordX = (block.getAttribute("id") - 1) % 6;
         let cordY = Math.floor((block.getAttribute("id") - 1) / 6);
-        console.log(cordX, cordY);
         if (!gameboard.placeShip(cordX, cordY, theShip)) {
           return;
         }
+        let sibling = block;
+        for (let i = 0; i < theShip.getBody().length; i++) {
+          sibling.style.backgroundColor = "#058514";
+          sibling = sibling.nextElementSibling;
+        }
+        console.log(gameboard.getGameBoard());
         shipSelected = false;
       });
       block.addEventListener("mouseover", () => {
         if (shipSelected) {
           let sibling = block;
           for (let i = 0; i < theShip.getBody().length; i++) {
-            sibling.style.backgroundColor = "#991b08";
-            sibling = sibling.nextElementSibling;
+            if (rgbToHex(sibling.style.backgroundColor) != "#058514") {
+              sibling.style.backgroundColor = "#991b08";
+              sibling = sibling.nextElementSibling;
+            }
           }
         }
       });
@@ -58,8 +78,10 @@ const NewGame = () => {
         if (shipSelected) {
           let sibling = block;
           for (let i = 0; i < theShip.getBody().length; i++) {
-            sibling.style.backgroundColor = "#9abac5";
-            sibling = sibling.nextElementSibling;
+            if (rgbToHex(sibling.style.backgroundColor) != "#058514") {
+              sibling.style.backgroundColor = "#9abac5";
+              sibling = sibling.nextElementSibling;
+            }
           }
         }
       });
