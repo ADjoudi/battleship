@@ -41,5 +41,15 @@ export default function Gameboard() {
     }
     return true;
   };
-  return { checkAvailability, placeShip, receiveAttack, allShipsSunk };
+
+  const getGameBoard = () => {
+    return gameboard;
+  };
+  return {
+    checkAvailability,
+    placeShip,
+    receiveAttack,
+    allShipsSunk,
+    getGameBoard,
+  };
 }
