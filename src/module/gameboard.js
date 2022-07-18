@@ -27,10 +27,10 @@ export default function Gameboard() {
     if (gameboard[cordY][cordX] == "") {
       gameboard[cordY][cordX] == "miss";
       console.log("missed");
-      return gameboard;
+      return false;
     }
-    gameboard[cordY][cordX] = "hit";
     let shipName = gameboard[cordY][cordX];
+    gameboard[cordY][cordX] = "hit";
     return { cordX, cordY, shipName };
   };
   const allShipsSunk = () => {

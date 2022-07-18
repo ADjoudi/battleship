@@ -12,8 +12,9 @@ export default function Ship(shipName, len) {
     return true;
   };
   const isSunk = () => {
-    body.forEach((unit) => {
-      if (unit !== "hit") {
+    console.log("sinking" + getBody());
+    getBody().forEach((unit) => {
+      if (unit != "hit") {
         return false;
       }
     });

@@ -44,21 +44,25 @@ const NewGame = () => {
       block.addEventListener("click", () => {
         let cordX = (block.getAttribute("id") - 1) % 6;
         let cordY = Math.floor((block.getAttribute("id") - 1) / 6);
-        console.log(opponentGameboard.getGameBoard());
         const shipHit = opponentGameboard.receiveAttack(cordX, cordY);
         if (!shipHit) {
-          console.log("und");
+          block.style.backgroundColor = "#000000";
           return;
         }
+        block.style.backgroundColor = "#ffffff";
         shipyardData.forEach((ship) => {
-          if (ship.getShipName == shipHit.shipName) {
+          console.log(ship, shipHit);
+          if (ship.getShipName() == shipHit.shipName) {
             let shipCord = opponentGameboard.findShipFirstCord(
               shipHit.shipName
             );
             shipCord = 6 - shipCord;
             shipCord = shipCord - shipHit.cordX;
             ship.hit(shipCord);
-            console.log(ship);
+            console.log(ship.getBody());
+            if (ship.isSunk()) {
+              console.log("is sunk" + ship);
+            }
           }
         });
       });
@@ -74,7 +78,6 @@ const NewGame = () => {
         cordY = Math.round(Math.random() * 5);
       } while (!opponentGameboard.placeShip(cordX, cordY, ship));
     });
-    console.log(opponentGameboard.getGameBoard());
   };
   const shipPlacement = () => {
     let shipSelected = false;
@@ -110,7 +113,6 @@ const NewGame = () => {
         if (nbrShips === 0) {
           gameStart();
         }
-        console.log(gameboard.getGameBoard());
         shipSelected = false;
       });
       block.addEventListener("mouseover", () => {
