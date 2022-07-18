@@ -37,14 +37,62 @@ const NewGame = () => {
   ];
   const shipyard = document.querySelector(".shipyard");
   const ships = document.querySelectorAll(".shipyard .ship");
-  const blocks = document.querySelectorAll(".board .block");
+  const playerBlocks = document.querySelectorAll("#playerboard .block");
 
   let nbrShips = 5;
 
   const opBoard = document.querySelector("#opponentboard");
   const opBoardBlocks = document.querySelectorAll("#opponentboard .block");
 
+  const title = document.querySelector("#title");
+
   const gameStart = () => {
+    const attackRecord = [];
+    const attackPlayer = () => {
+      let chosenBlock;
+      do {
+        chosenBlock = Math.round(Math.random() * 35);
+      } while (attackRecord.includes(chosenBlock));
+      playerBlocks.forEach((block) => {
+        if (block.getAttribute("id") == chosenBlock) {
+          //attack
+          let cordX = (block.getAttribute("id") - 1) % 6;
+          let cordY = Math.floor((block.getAttribute("id") - 1) / 6);
+          const shipHit = gameboard.receiveAttack(cordX, cordY);
+          attackRecord.push(chosenBlock);
+          if (!shipHit) {
+            block.style.backgroundColor = "#000000";
+
+            return;
+          }
+
+          block.style.backgroundColor = "#ffffff";
+
+          shipyardData.forEach((ship) => {
+            if (ship.getShipName() == shipHit.shipName) {
+              let rootCord = ship.getRootCord();
+              let hitCord = shipHit.cordX - rootCord;
+              ship.hit(hitCord);
+              console.log(ship.getBody());
+              if (ship.isSunk()) {
+                let startingPoint = rootCord + 1 + 6 * shipHit.cordY;
+                for (let i = 0; i < ship.getBody().length; i++) {
+                  playerBlocks.forEach((block) => {
+                    if (block.getAttribute("id") == startingPoint) {
+                      block.style.backgroundColor = "#991b08";
+                    }
+                  });
+                  startingPoint++;
+                }
+                if (gameboard.allShipsSunk()) {
+                  title.textContent = "Winner: Computer!";
+                }
+              }
+            }
+          });
+        }
+      });
+    };
     opBoardBlocks.forEach((block) => {
       block.style.backgroundColor = "#9abac5";
 
@@ -52,11 +100,12 @@ const NewGame = () => {
         let cordX = (block.getAttribute("id") - 1) % 6;
         let cordY = Math.floor((block.getAttribute("id") - 1) / 6);
         const shipHit = opponentGameboard.receiveAttack(cordX, cordY);
-
         if (!shipHit) {
           block.style.backgroundColor = "#000000";
+          attackPlayer();
           return;
         }
+        attackPlayer();
         block.style.backgroundColor = "#ffffff";
 
         opShipyardData.forEach((ship) => {
@@ -75,7 +124,7 @@ const NewGame = () => {
                 startingPoint++;
               }
               if (opponentGameboard.allShipsSunk()) {
-                console.log("found them all");
+                title.textContent = "Winner: Player!";
               }
             }
           }
@@ -111,7 +160,7 @@ const NewGame = () => {
       });
     });
 
-    blocks.forEach((block) => {
+    playerBlocks.forEach((block) => {
       block.addEventListener("click", () => {
         if (!shipSelected) return;
         let cordX = (block.getAttribute("id") - 1) % 6;

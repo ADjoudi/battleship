@@ -26,7 +26,7 @@ export default function Gameboard() {
   const receiveAttack = (cordX, cordY) => {
     if (gameboard[cordY][cordX] == "") {
       gameboard[cordY][cordX] == "miss";
-      console.log("missed");
+      //console.log("missed");
       return false;
     }
     let shipName = gameboard[cordY][cordX];
