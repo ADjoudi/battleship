@@ -28,6 +28,13 @@ const NewGame = () => {
     Ship("battleship", 4),
     Ship("carrier", 5),
   ];
+  const opShipyardData = [
+    Ship("cruiser", 1),
+    Ship("submarine", 2),
+    Ship("destroyer", 3),
+    Ship("battleship", 4),
+    Ship("carrier", 5),
+  ];
   const shipyard = document.querySelector(".shipyard");
   const ships = document.querySelectorAll(".shipyard .ship");
   const blocks = document.querySelectorAll(".board .block");
@@ -45,23 +52,19 @@ const NewGame = () => {
         let cordX = (block.getAttribute("id") - 1) % 6;
         let cordY = Math.floor((block.getAttribute("id") - 1) / 6);
         const shipHit = opponentGameboard.receiveAttack(cordX, cordY);
+
         if (!shipHit) {
           block.style.backgroundColor = "#000000";
           return;
         }
         block.style.backgroundColor = "#ffffff";
-        shipyardData.forEach((ship) => {
-          console.log(ship, shipHit);
+
+        opShipyardData.forEach((ship) => {
           if (ship.getShipName() == shipHit.shipName) {
-            let shipCord = opponentGameboard.findShipFirstCord(
-              shipHit.shipName
-            );
-            shipCord = 6 - shipCord;
-            shipCord = shipCord - shipHit.cordX;
-            ship.hit(shipCord);
-            console.log(ship.getBody());
+            let rootCord = ship.getRootCord();
+            let hitCord = shipHit.cordX - rootCord;
+            ship.hit(hitCord);
             if (ship.isSunk()) {
-              console.log("is sunk" + ship);
             }
           }
         });
@@ -70,12 +73,13 @@ const NewGame = () => {
   };
 
   const opponentShipPlacement = () => {
-    shipyardData.forEach((ship) => {
+    opShipyardData.forEach((ship) => {
       let cordX;
       let cordY;
       do {
         cordX = Math.round(Math.random() * 5);
         cordY = Math.round(Math.random() * 5);
+        ship.setRootCord(cordX);
       } while (!opponentGameboard.placeShip(cordX, cordY, ship));
     });
   };
@@ -108,12 +112,12 @@ const NewGame = () => {
           sibling.style.backgroundColor = "#058514";
           sibling = sibling.nextElementSibling;
         }
+        shipSelected = false;
         //Start the game after placing all ships
         nbrShips--;
         if (nbrShips === 0) {
           gameStart();
         }
-        shipSelected = false;
       });
       block.addEventListener("mouseover", () => {
         if (shipSelected) {
