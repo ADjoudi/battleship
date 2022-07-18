@@ -95,7 +95,6 @@ const NewGame = () => {
     };
     opBoardBlocks.forEach((block) => {
       block.style.backgroundColor = "#9abac5";
-
       block.addEventListener("click", () => {
         let cordX = (block.getAttribute("id") - 1) % 6;
         let cordY = Math.floor((block.getAttribute("id") - 1) / 6);
