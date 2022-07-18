@@ -65,6 +65,9 @@ const NewGame = () => {
             let hitCord = shipHit.cordX - rootCord;
             ship.hit(hitCord);
             if (ship.isSunk()) {
+              if (opponentGameboard.allShipsSunk()) {
+                console.log("found them all");
+              }
             }
           }
         });
