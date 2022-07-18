@@ -65,6 +65,15 @@ const NewGame = () => {
             let hitCord = shipHit.cordX - rootCord;
             ship.hit(hitCord);
             if (ship.isSunk()) {
+              let startingPoint = rootCord + 1 + 6 * shipHit.cordY;
+              for (let i = 0; i < ship.getBody().length; i++) {
+                opBoardBlocks.forEach((block) => {
+                  if (block.getAttribute("id") == startingPoint) {
+                    block.style.backgroundColor = "#991b08";
+                  }
+                });
+                startingPoint++;
+              }
               if (opponentGameboard.allShipsSunk()) {
                 console.log("found them all");
               }
